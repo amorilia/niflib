@@ -9,6 +9,7 @@ All rights reserved.  Please see niflib.h for license. */
 #include <iostream>
 #include <stdexcept>
 #include "dll_export.h"
+#include "nif_basic_types.h"
 
 using namespace std;
 namespace Niflib {
@@ -28,6 +29,7 @@ struct Vector3;
 struct Vector4;
 struct Color3;
 struct Color4;
+struct ByteColor4;
 struct Quaternion;
 struct Float2;
 struct Matrix22;
@@ -979,6 +981,73 @@ struct Color3 {
 };
 
 /*! Stores a color along with alpha translucency */
+struct ByteColor4 {
+	byte r; /*!< The red component of this color.  Should be between 0 and 255. */ 
+	byte g; /*!< The green component of this color.  Should be between 0 and 255. */ 
+	byte b; /*!< The blue component of this color.  Should be between 0 and 255. */ 
+	byte a; /*!< The alpha translucency component of this color.  Should be between 0 and 255. */ 
+
+	NIFLIB_API ByteColor4 operator+(const ByteColor4& rhs) const
+	{
+		ByteColor4 ret;
+		ret = *this;
+		ret.r += rhs.r;
+		ret.g += rhs.g;
+		ret.b += rhs.b;
+		ret.a += rhs.a;
+		return ret;
+	}
+
+	NIFLIB_API ByteColor4 operator*(const byte rhs) const
+	{
+		ByteColor4 ret;
+		ret = *this;
+		ret.r *= rhs;
+		ret.g *= rhs;
+		ret.b *= rhs;
+		ret.a *= rhs;
+		return ret;
+	}
+
+	/*! Default constructor */
+	NIFLIB_API ByteColor4() : r(0), g(0), b(0), a(0) {}
+
+	/*! This constructor can be used to set all values in this structure during initialization
+	 * \param[in] r The value to set the red component of this color to.  Should be between 0 and 255.
+	 * \param[in] g The value to set the green component of this color to. Should be between 0 and 255.
+	 * \param[in] b The value to set the blue component of this color to.  Should be between 0 and 255.
+	 * \param[in] a The value to set the alpha translucency component of this color to.  Should be between 0 and 255.
+	 */
+	NIFLIB_API ByteColor4(byte r, byte g, byte b, byte a = 255) {
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}
+
+	/*! This function can be used to set all values in the structure at the same time.
+	 * \param[in] r The value to set the red component of this color to.  Should be between 0 and 255.
+	 * \param[in] g The value to set the green component of this color to. Should be between 0 and 255.
+	 * \param[in] b The value to set the blue component of this color to.  Should be between 0 and 255.
+	 * \param[in] a The value to set the alpha translucency component of this color to.  Should be between 0 and 255.
+	 */
+	NIFLIB_API void Set(byte r, byte g, byte b, byte a = 255) {
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}
+
+	NIFLIB_API bool operator==( const ByteColor4 & n ) const {
+		return ( r == n.r && g == n.g && b == n.b && a == n.a );
+	}
+
+	NIFLIB_API bool operator!=( const ByteColor4 & n ) const {
+		return ( r != n.r || g != n.g || b != n.b || a != n.a );
+	}
+};
+
+/*! Stores a color along with alpha translucency */
 struct Color4 {
 	float r; /*!< The red component of this color.  Should be between 0.0f and 1.0f. */ 
 	float g; /*!< The green component of this color.  Should be between 0.0f and 1.0f. */ 
@@ -1295,6 +1364,7 @@ NIFLIB_API ostream & operator<<( ostream & out, Matrix33 const & val );
 NIFLIB_API ostream & operator<<( ostream & out, Float4 const & val );
 NIFLIB_API ostream & operator<<( ostream & out, Color3 const & val );
 NIFLIB_API ostream & operator<<( ostream & out, Color4 const & val );
+NIFLIB_API ostream & operator<<( ostream & out, ByteColor4 const & val );
 NIFLIB_API ostream & operator<<( ostream & out, Quaternion const & val );
 NIFLIB_API ostream & operator<<( ostream & out, Matrix44 const & val );
 NIFLIB_API ostream & operator<<( ostream & out, InertiaMatrix const & val );

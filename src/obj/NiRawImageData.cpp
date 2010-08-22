@@ -15,7 +15,6 @@ All rights reserved.  Please see niflib.h for license. */
 #include "../../include/NIF_IO.h"
 #include "../../include/obj/NiRawImageData.h"
 #include "../../include/gen/ByteColor3.h"
-#include "../../include/gen/ByteColor4.h"
 using namespace Niflib;
 
 //Definition of TYPE constant
@@ -63,10 +62,7 @@ void NiRawImageData::Read( istream& in, list<unsigned int> & link_stack, const N
 		for (unsigned int i2 = 0; i2 < rgbaImageData.size(); i2++) {
 			rgbaImageData[i2].resize(height);
 			for (unsigned int i3 = 0; i3 < rgbaImageData[i2].size(); i3++) {
-				NifStream( rgbaImageData[i2][i3].r, in, info );
-				NifStream( rgbaImageData[i2][i3].g, in, info );
-				NifStream( rgbaImageData[i2][i3].b, in, info );
-				NifStream( rgbaImageData[i2][i3].a, in, info );
+				NifStream( rgbaImageData[i2][i3], in, info );
 			};
 		};
 	};
@@ -97,10 +93,7 @@ void NiRawImageData::Write( ostream& out, const map<NiObjectRef,unsigned int> & 
 	if ( (imageType == 2) ) {
 		for (unsigned int i2 = 0; i2 < rgbaImageData.size(); i2++) {
 			for (unsigned int i3 = 0; i3 < rgbaImageData[i2].size(); i3++) {
-				NifStream( rgbaImageData[i2][i3].r, out, info );
-				NifStream( rgbaImageData[i2][i3].g, out, info );
-				NifStream( rgbaImageData[i2][i3].b, out, info );
-				NifStream( rgbaImageData[i2][i3].a, out, info );
+				NifStream( rgbaImageData[i2][i3], out, info );
 			};
 		};
 	};
@@ -143,10 +136,11 @@ std::string NiRawImageData::asString( bool verbose ) const {
 				break;
 			};
 			for (unsigned int i3 = 0; i3 < rgbaImageData[i2].size(); i3++) {
-				out << "        r:  " << rgbaImageData[i2][i3].r << endl;
-				out << "        g:  " << rgbaImageData[i2][i3].g << endl;
-				out << "        b:  " << rgbaImageData[i2][i3].b << endl;
-				out << "        a:  " << rgbaImageData[i2][i3].a << endl;
+				if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
+					break;
+				};
+				out << "        RGBA Image Data[" << i3 << "]:  " << rgbaImageData[i2][i3] << endl;
+				array_output_count++;
 			};
 		};
 	};

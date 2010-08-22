@@ -285,8 +285,8 @@ protected:
 	/*! Unknown */
 	short unknownShort2;
 	/*!
-	 * Unknown, found in some Lazeska .KFs (seems to be 64 when present). Conditions
-	 * are unknown.
+	 * Unknown, found in some Lazeska and Krazy Rain .KFs (seems to be 64 when
+	 * present).
 	 */
 	unsigned int unknownInt3;
 public:

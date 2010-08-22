@@ -14,9 +14,6 @@ All rights reserved.  Please see niflib.h for license. */
 //--END CUSTOM CODE--//
 
 #include "NiObject.h"
-
-// Include structures
-#include "../gen/ByteColor4.h"
 namespace Niflib {
 
 class NiPalette;

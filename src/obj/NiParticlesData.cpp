@@ -76,13 +76,13 @@ void NiParticlesData::Read( istream& in, list<unsigned int> & link_stack, const 
 	};
 	if ( ( info.version >= 0x0A010000 ) && ( (!((info.version >= 0x14020007) && (info.userVersion == 11))) ) ) {
 		if ( ((hasNormals != 0) && (tspaceFlag & 240)) ) {
-			binormals.resize(numVertices);
-			for (unsigned int i3 = 0; i3 < binormals.size(); i3++) {
-				NifStream( binormals[i3], in, info );
-			};
 			tangents.resize(numVertices);
 			for (unsigned int i3 = 0; i3 < tangents.size(); i3++) {
 				NifStream( tangents[i3], in, info );
+			};
+			binormals.resize(numVertices);
+			for (unsigned int i3 = 0; i3 < binormals.size(); i3++) {
+				NifStream( binormals[i3], in, info );
 			};
 		};
 	};
@@ -233,11 +233,11 @@ void NiParticlesData::Write( ostream& out, const map<NiObjectRef,unsigned int> &
 	};
 	if ( ( info.version >= 0x0A010000 ) && ( (!((info.version >= 0x14020007) && (info.userVersion == 11))) ) ) {
 		if ( ((hasNormals != 0) && (tspaceFlag & 240)) ) {
-			for (unsigned int i3 = 0; i3 < binormals.size(); i3++) {
-				NifStream( binormals[i3], out, info );
-			};
 			for (unsigned int i3 = 0; i3 < tangents.size(); i3++) {
 				NifStream( tangents[i3], out, info );
+			};
+			for (unsigned int i3 = 0; i3 < binormals.size(); i3++) {
+				NifStream( binormals[i3], out, info );
 			};
 		};
 	};
@@ -396,18 +396,6 @@ std::string NiParticlesData::asString( bool verbose ) const {
 	};
 	if ( ((hasNormals != 0) && (tspaceFlag & 240)) ) {
 		array_output_count = 0;
-		for (unsigned int i2 = 0; i2 < binormals.size(); i2++) {
-			if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
-				out << "<Data Truncated. Use verbose mode to see complete listing.>" << endl;
-				break;
-			};
-			if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
-				break;
-			};
-			out << "      Binormals[" << i2 << "]:  " << binormals[i2] << endl;
-			array_output_count++;
-		};
-		array_output_count = 0;
 		for (unsigned int i2 = 0; i2 < tangents.size(); i2++) {
 			if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
 				out << "<Data Truncated. Use verbose mode to see complete listing.>" << endl;
@@ -417,6 +405,18 @@ std::string NiParticlesData::asString( bool verbose ) const {
 				break;
 			};
 			out << "      Tangents[" << i2 << "]:  " << tangents[i2] << endl;
+			array_output_count++;
+		};
+		array_output_count = 0;
+		for (unsigned int i2 = 0; i2 < binormals.size(); i2++) {
+			if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
+				out << "<Data Truncated. Use verbose mode to see complete listing.>" << endl;
+				break;
+			};
+			if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
+				break;
+			};
+			out << "      Binormals[" << i2 << "]:  " << binormals[i2] << endl;
 			array_output_count++;
 		};
 	};

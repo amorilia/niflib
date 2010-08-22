@@ -269,10 +269,17 @@ protected:
 	bool hasVertices;
 	/*! The mesh vertices. */
 	vector<Vector3 > vertices;
-	/*! Texture flags in lower byte. */
-	mutable byte numUvSets;
-	/*! Methods for saving binormals and tangents saved in upper byte. */
-	byte tspaceFlag;
+	/*!
+	 * Methods for saving binormals and tangents saved in upper byte.  Texture flags in
+	 * lower byte.
+	 */
+	mutable unsigned short numUvSets;
+	/*!
+	 * Bethesda's version of this field for nif versions 20.2.0.7 and up. Only a single
+	 * bit denotes whether uv's are present. For example, see
+	 * meshes/architecture/megaton/megatonrampturn45sml.nif in Fallout 3.
+	 */
+	mutable unsigned short bsNumUvSets;
 	/*!
 	 * Do we have lighting normals? These are essential for proper lighting: if not
 	 * present, the model will only be influenced by ambient light.
@@ -280,13 +287,13 @@ protected:
 	bool hasNormals;
 	/*! The lighting normals. */
 	vector<Vector3 > normals;
+	/*! Unknown. Binormal & tangents? */
+	vector<Vector3 > tangents;
 	/*!
 	 * Unknown. Binormal & tangents? has_normals must be set as well for this field to
 	 * be present.
 	 */
 	vector<Vector3 > binormals;
-	/*! Unknown. Binormal & tangents? */
-	vector<Vector3 > tangents;
 	/*!
 	 * Center of the bounding box (smallest box that contains all vertices) of the
 	 * mesh.
@@ -297,6 +304,8 @@ protected:
 	 * vertices.
 	 */
 	float radius;
+	/*! Unknown, always 0? */
+	array<13,short > unknown13Shorts;
 	/*!
 	 * Do we have vertex colors? These are usually used to fine-tune the lighting of
 	 * the model.

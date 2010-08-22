@@ -10,6 +10,8 @@ All rights reserved.  Please see niflib.h for license. */
 
 #include "../NIF_IO.h"
 
+// Include structures
+#include "MotorDescriptor.h"
 namespace Niflib {
 
 
@@ -45,6 +47,16 @@ struct RagdollDescriptor {
 	/*! Twist A in second entity coordinate system. */
 	Vector4 twistB;
 	/*!
+	 * Defines the orthogonal directions in which the shape can be controlled (namely
+	 * in this direction, and in the direction orthogonal on this one and Twist A).
+	 */
+	Vector4 motorA;
+	/*!
+	 * Defines the orthogonal directions in which the shape can be controlled (namely
+	 * in this direction, and in the direction orthogonal on this one and Twist A).
+	 */
+	Vector4 motorB;
+	/*!
 	 * Maximum angle the object can rotate around the vector orthogonal on Plane A and
 	 * Twist A relative to the Twist A vector. Note that Cone Min Angle is not stored,
 	 * but is simply minus this angle.
@@ -58,22 +70,12 @@ struct RagdollDescriptor {
 	float twistMinAngle;
 	/*! Maximum angle the object can rotate around Twist A, relative to Plane A. */
 	float twistMaxAngle;
-	/*! Maximum friction, typically 0 or 10. */
+	/*! Maximum friction, typically 0 or 10. In Fallout 3, typically 100. */
 	float maxFriction;
 	/*! Unknown */
-	float unknownFloat1;
-	/*! Unknown */
-	float unknownFloat2;
-	/*! Unknown */
-	float unknownFloat3;
-	/*! Unknown */
-	float unknownFloat4;
-	/*! Unknown */
-	float unknownFloat5;
-	/*! Unknown */
-	float unknownFloat6;
-	/*! Unknown */
-	float unknownFloat7;
+	byte enableMotor;
+	/*! Unknown. */
+	MotorDescriptor motor;
 };
 
 }

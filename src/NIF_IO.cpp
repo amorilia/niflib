@@ -604,6 +604,21 @@ void NifStream( Color3 const & val, ostream& out, const NifInfo & info ) {
 	WriteFloat( val.b, out );
 };
 
+//ByteColor4
+void NifStream( ByteColor4 & val, istream& in, const NifInfo & info ) {
+	val.r = ReadByte( in );
+	val.g = ReadByte( in );
+	val.b = ReadByte( in );
+	val.a = ReadByte( in );
+};
+
+void NifStream( ByteColor4 const & val, ostream& out, const NifInfo & info ) {
+	WriteByte( val.r, out );
+	WriteByte( val.g, out );
+	WriteByte( val.b, out );
+	WriteByte( val.a, out );
+};
+
 //Color4
 void NifStream( Color4 & val, istream& in, const NifInfo & info ) {
 	val.r = ReadFloat( in );

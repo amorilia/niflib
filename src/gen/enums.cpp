@@ -225,6 +225,29 @@ ostream & operator<<( ostream & out, VelocityType const & val ) {
 }
 
 
+//--DataStreamUsage--//
+
+void NifStream( DataStreamUsage & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = DataStreamUsage(temp);
+}
+
+void NifStream( DataStreamUsage const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, DataStreamUsage const & val ) {
+	switch ( val ) {
+		case USAGE_VERTEX_INDEX: return out << "USAGE_VERTEX_INDEX";
+		case USAGE_VERTEX: return out << "USAGE_VERTEX";
+		case USAGE_SHADER_CONSTANT: return out << "USAGE_SHADER_CONSTANT";
+		case USAGE_USER: return out << "USAGE_USER";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
 //--StencilCompareMode--//
 
 void NifStream( StencilCompareMode & val, istream& in, const NifInfo & info ) {
@@ -362,6 +385,33 @@ ostream & operator<<( ostream & out, StencilAction const & val ) {
 		case ACTION_INCREMENT: return out << "ACTION_INCREMENT";
 		case ACTION_DECREMENT: return out << "ACTION_DECREMENT";
 		case ACTION_INVERT: return out << "ACTION_INVERT";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
+//--SyncPoint--//
+
+void NifStream( SyncPoint & val, istream& in, const NifInfo & info ) {
+	unsigned short temp;
+	NifStream( temp, in, info );
+	val = SyncPoint(temp);
+}
+
+void NifStream( SyncPoint const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned short)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, SyncPoint const & val ) {
+	switch ( val ) {
+		case SYNC_ANY: return out << "SYNC_ANY";
+		case SYNC_UPDATE: return out << "SYNC_UPDATE";
+		case SYNC_POST_UPDATE: return out << "SYNC_POST_UPDATE";
+		case SYNC_VISIBLE: return out << "SYNC_VISIBLE";
+		case SYNC_RENDER: return out << "SYNC_RENDER";
+		case SYNC_PHYSICS_SIMULATE: return out << "SYNC_PHYSICS_SIMULATE";
+		case SYNC_PHYSICS_COMPLETED: return out << "SYNC_PHYSICS_COMPLETED";
+		case SYNC_REFLECTIONS: return out << "SYNC_REFLECTIONS";
 		default: return out << "Invalid Value! - " << (unsigned int)(val);
 	}
 }
@@ -542,6 +592,30 @@ ostream & operator<<( ostream & out, OblivionLayer const & val ) {
 }
 
 
+//--PSLoopBehavior--//
+
+void NifStream( PSLoopBehavior & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = PSLoopBehavior(temp);
+}
+
+void NifStream( PSLoopBehavior const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, PSLoopBehavior const & val ) {
+	switch ( val ) {
+		case PS_LOOP_CLAMP_BIRTH: return out << "PS_LOOP_CLAMP_BIRTH";
+		case PS_LOOP_CLAMP_DEATH: return out << "PS_LOOP_CLAMP_DEATH";
+		case PS_LOOP_AGESCALE: return out << "PS_LOOP_AGESCALE";
+		case PS_LOOP_LOOP: return out << "PS_LOOP_LOOP";
+		case PS_LOOP_REFLECT: return out << "PS_LOOP_REFLECT";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
 //--SolverDeactivation--//
 
 void NifStream( SolverDeactivation & val, istream& in, const NifInfo & info ) {
@@ -562,6 +636,30 @@ ostream & operator<<( ostream & out, SolverDeactivation const & val ) {
 		case SOLVER_DEACTIVATION_MEDIUM: return out << "SOLVER_DEACTIVATION_MEDIUM";
 		case SOLVER_DEACTIVATION_HIGH: return out << "SOLVER_DEACTIVATION_HIGH";
 		case SOLVER_DEACTIVATION_MAX: return out << "SOLVER_DEACTIVATION_MAX";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
+//--MeshPrimitiveType--//
+
+void NifStream( MeshPrimitiveType & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = MeshPrimitiveType(temp);
+}
+
+void NifStream( MeshPrimitiveType const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, MeshPrimitiveType const & val ) {
+	switch ( val ) {
+		case MESH_PRIMITIVE_TRIANGLES: return out << "MESH_PRIMITIVE_TRIANGLES";
+		case MESH_PRIMITIVE_TRISTRIPS: return out << "MESH_PRIMITIVE_TRISTRIPS";
+		case MESH_PRIMITIVE_LINESTRIPS: return out << "MESH_PRIMITIVE_LINESTRIPS";
+		case MESH_PRIMITIVE_QUADS: return out << "MESH_PRIMITIVE_QUADS";
+		case MESH_PRIMITIVE_POINTS: return out << "MESH_PRIMITIVE_POINTS";
 		default: return out << "Invalid Value! - " << (unsigned int)(val);
 	}
 }
@@ -1053,6 +1151,88 @@ ostream & operator<<( ostream & out, TexClampMode const & val ) {
 }
 
 
+//--ComponentFormat--//
+
+void NifStream( ComponentFormat & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = ComponentFormat(temp);
+}
+
+void NifStream( ComponentFormat const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, ComponentFormat const & val ) {
+	switch ( val ) {
+		case F_UNKNOWN: return out << "F_UNKNOWN";
+		case F_INT8_1: return out << "F_INT8_1";
+		case F_INT8_2: return out << "F_INT8_2";
+		case F_INT8_3: return out << "F_INT8_3";
+		case F_INT8_4: return out << "F_INT8_4";
+		case F_UINT8_1: return out << "F_UINT8_1";
+		case F_UINT8_2: return out << "F_UINT8_2";
+		case F_UINT8_3: return out << "F_UINT8_3";
+		case F_UINT8_4: return out << "F_UINT8_4";
+		case F_NORMINT8_1: return out << "F_NORMINT8_1";
+		case F_NORMINT8_2: return out << "F_NORMINT8_2";
+		case F_NORMINT8_3: return out << "F_NORMINT8_3";
+		case F_NORMINT8_4: return out << "F_NORMINT8_4";
+		case F_NORMUINT8_1: return out << "F_NORMUINT8_1";
+		case F_NORMUINT8_2: return out << "F_NORMUINT8_2";
+		case F_NORMUINT8_3: return out << "F_NORMUINT8_3";
+		case F_NORMUINT8_4: return out << "F_NORMUINT8_4";
+		case F_INT16_1: return out << "F_INT16_1";
+		case F_INT16_2: return out << "F_INT16_2";
+		case F_INT16_3: return out << "F_INT16_3";
+		case F_INT16_4: return out << "F_INT16_4";
+		case F_UINT16_1: return out << "F_UINT16_1";
+		case F_UINT16_2: return out << "F_UINT16_2";
+		case F_UINT16_3: return out << "F_UINT16_3";
+		case F_UINT16_4: return out << "F_UINT16_4";
+		case F_NORMINT16_1: return out << "F_NORMINT16_1";
+		case F_NORMINT16_2: return out << "F_NORMINT16_2";
+		case F_NORMINT16_3: return out << "F_NORMINT16_3";
+		case F_NORMINT16_4: return out << "F_NORMINT16_4";
+		case F_NORMUINT16_1: return out << "F_NORMUINT16_1";
+		case F_NORMUINT16_2: return out << "F_NORMUINT16_2";
+		case F_NORMUINT16_3: return out << "F_NORMUINT16_3";
+		case F_NORMUINT16_4: return out << "F_NORMUINT16_4";
+		case F_INT32_1: return out << "F_INT32_1";
+		case F_INT32_2: return out << "F_INT32_2";
+		case F_INT32_3: return out << "F_INT32_3";
+		case F_INT32_4: return out << "F_INT32_4";
+		case F_UINT32_1: return out << "F_UINT32_1";
+		case F_UINT32_2: return out << "F_UINT32_2";
+		case F_UINT32_3: return out << "F_UINT32_3";
+		case F_UINT32_4: return out << "F_UINT32_4";
+		case F_NORMINT32_1: return out << "F_NORMINT32_1";
+		case F_NORMINT32_2: return out << "F_NORMINT32_2";
+		case F_NORMINT32_3: return out << "F_NORMINT32_3";
+		case F_NORMINT32_4: return out << "F_NORMINT32_4";
+		case F_NORMUINT32_1: return out << "F_NORMUINT32_1";
+		case F_NORMUINT32_2: return out << "F_NORMUINT32_2";
+		case F_NORMUINT32_3: return out << "F_NORMUINT32_3";
+		case F_NORMUINT32_4: return out << "F_NORMUINT32_4";
+		case F_FLOAT16_1: return out << "F_FLOAT16_1";
+		case F_FLOAT16_2: return out << "F_FLOAT16_2";
+		case F_FLOAT16_3: return out << "F_FLOAT16_3";
+		case F_FLOAT16_4: return out << "F_FLOAT16_4";
+		case F_FLOAT32_1: return out << "F_FLOAT32_1";
+		case F_FLOAT32_2: return out << "F_FLOAT32_2";
+		case F_FLOAT32_3: return out << "F_FLOAT32_3";
+		case F_FLOAT32_4: return out << "F_FLOAT32_4";
+		case F_UINT_10_10_10_L1: return out << "F_UINT_10_10_10_L1";
+		case F_NORMINT_10_10_10_L1: return out << "F_NORMINT_10_10_10_L1";
+		case F_NORMINT_11_11_10: return out << "F_NORMINT_11_11_10";
+		case F_NORMUINT8_4_BGRA: return out << "F_NORMUINT8_4_BGRA";
+		case F_NORMINT_10_10_10_2: return out << "F_NORMINT_10_10_10_2";
+		case F_UINT_10_10_10_2: return out << "F_UINT_10_10_10_2";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
 //--MotionQuality--//
 
 void NifStream( MotionQuality & val, istream& in, const NifInfo & info ) {
@@ -1077,6 +1257,28 @@ ostream & operator<<( ostream & out, MotionQuality const & val ) {
 		case MO_QUAL_USER: return out << "MO_QUAL_USER";
 		case MO_QUAL_CHARACTER: return out << "MO_QUAL_CHARACTER";
 		case MO_QUAL_KEYFRAMED_REPORT: return out << "MO_QUAL_KEYFRAMED_REPORT";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
+//--CloningBehavior--//
+
+void NifStream( CloningBehavior & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = CloningBehavior(temp);
+}
+
+void NifStream( CloningBehavior const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, CloningBehavior const & val ) {
+	switch ( val ) {
+		case CLONING_SHARE: return out << "CLONING_SHARE";
+		case CLONING_COPY: return out << "CLONING_COPY";
+		case CLONING_BLANK_COPY: return out << "CLONING_BLANK_COPY";
 		default: return out << "Invalid Value! - " << (unsigned int)(val);
 	}
 }
@@ -1265,6 +1467,32 @@ ostream & operator<<( ostream & out, BSShaderFlags const & val ) {
 		case SF_LOWDDETAIL: return out << "SF_LOWDDETAIL";
 		case SF_SKINNED: return out << "SF_SKINNED";
 		case SF_UNKNOWN_31: return out << "SF_UNKNOWN_31";
+		default: return out << "Invalid Value! - " << (unsigned int)(val);
+	}
+}
+
+
+//--DataStreamAccess--//
+
+void NifStream( DataStreamAccess & val, istream& in, const NifInfo & info ) {
+	unsigned int temp;
+	NifStream( temp, in, info );
+	val = DataStreamAccess(temp);
+}
+
+void NifStream( DataStreamAccess const & val, ostream& out, const NifInfo & info ) {
+	NifStream( (unsigned int)(val), out, info );
+}
+
+ostream & operator<<( ostream & out, DataStreamAccess const & val ) {
+	switch ( val ) {
+		case CPU_READ: return out << "CPU Read";
+		case CPU_WRITE_STATIC: return out << "CPU Write Static";
+		case CPU_WRITE_MUTABLE: return out << "CPU Write Mutable";
+		case CPU_WRITE_VOLATILE: return out << "CPU Write Volatile";
+		case GPU_READ: return out << "GPU Read";
+		case GPU_WRITE: return out << "GPU Write";
+		case CPU_WRITE_STATIC_INITITIALIZED: return out << "CPU Write Static Inititialized";
 		default: return out << "Invalid Value! - " << (unsigned int)(val);
 	}
 }

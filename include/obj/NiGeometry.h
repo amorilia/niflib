@@ -22,7 +22,7 @@ All rights reserved.  Please see niflib.h for license. */
 namespace Niflib {
 
 // Forward define of referenced NIF objects
-class NiObject;
+class NiGeometryData;
 class NiSkinInstance;
 class NiGeometry;
 typedef Ref<NiGeometry> NiGeometryRef;
@@ -168,7 +168,7 @@ public:
 	//--END CUSTOM CODE--//
 protected:
 	/*! Data index (NiTriShapeData/NiTriStripData). */
-	Ref<NiObject > data;
+	Ref<NiGeometryData > data;
 	/*! Skin instance index. */
 	Ref<NiSkinInstance > skinInstance;
 	/*! Num Materials */

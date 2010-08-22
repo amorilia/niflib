@@ -177,6 +177,10 @@ void NifStream( Matrix44 const & val, ostream& out, const NifInfo & info);
 void NifStream( Color3 & val, istream& in, const NifInfo & info);
 void NifStream( Color3 const & val, ostream& out, const NifInfo & info );
 
+//ByteColor4
+void NifStream( ByteColor4 & val, istream& in, const NifInfo & info);
+void NifStream( ByteColor4 const & val, ostream& out, const NifInfo & info );
+
 //Color4
 void NifStream( Color4 & val, istream& in, const NifInfo & info);
 void NifStream( Color4 const & val, ostream& out, const NifInfo & info );

@@ -115,6 +115,16 @@ enum VelocityType {
 
 ostream & operator<<( ostream & out, VelocityType const & val );
 
+/*! Determines how a data stream is used? */
+enum DataStreamUsage {
+	USAGE_VERTEX_INDEX = 0, /*!< USAGE_VERTEX_INDEX */
+	USAGE_VERTEX = 1, /*!< USAGE_VERTEX */
+	USAGE_SHADER_CONSTANT = 2, /*!< USAGE_SHADER_CONSTANT */
+	USAGE_USER = 3, /*!< USAGE_USER */
+};
+
+ostream & operator<<( ostream & out, DataStreamUsage const & val );
+
 /*! This enum contains the options for doing stencil buffer tests. */
 enum StencilCompareMode {
 	TEST_NEVER = 0, /*!< Test will allways return false. Nothing is drawn at all. */
@@ -187,6 +197,20 @@ enum StencilAction {
 };
 
 ostream & operator<<( ostream & out, StencilAction const & val );
+
+/*! Specifies the time when an application must syncronize for some reason. */
+enum SyncPoint {
+	SYNC_ANY = 0x8000, /*!< Value used when no specific sync point is desired. */
+	SYNC_UPDATE = 0x8010, /*!< Synchronize when an object is updated. */
+	SYNC_POST_UPDATE = 0x8020, /*!< Synchronize when an entire scene graph has been updated. */
+	SYNC_VISIBLE = 0x8030, /*!< Synchronize when an object is determined to be potentially visible. */
+	SYNC_RENDER = 0x8040, /*!< Synchronize when an object is rendered. */
+	SYNC_PHYSICS_SIMULATE = 0x8050, /*!< Synchronize when a physics simulation step is about to begin. */
+	SYNC_PHYSICS_COMPLETED = 0x8060, /*!< Synchronize when a physics simulation step has produced results. */
+	SYNC_REFLECTIONS = 0x8070, /*!< Syncronize after all data necessary to calculate reflections is ready. */
+};
+
+ostream & operator<<( ostream & out, SyncPoint const & val );
 
 enum BSDismemberBodyPartType {
 	BP_TORSO = 0, /*!< Torso */
@@ -325,6 +349,16 @@ enum OblivionLayer {
 
 ostream & operator<<( ostream & out, OblivionLayer const & val );
 
+enum PSLoopBehavior {
+	PS_LOOP_CLAMP_BIRTH = 0, /*!< Key times map such that the first key occurs at the birth of the particle, and times later than the last key get the last key value. */
+	PS_LOOP_CLAMP_DEATH = 1, /*!< Key times map such that the last key occurs at the death of the particle, and times before the initial key time get the value of the initial key. */
+	PS_LOOP_AGESCALE = 2, /*!< Scale the animation to fit the particle lifetime, so that the first key is age zero, and the last key comes at the particle death. */
+	PS_LOOP_LOOP = 3, /*!< The time is converted to one within the time range represented by the keys, as if the key sequence loops forever in the past and future. */
+	PS_LOOP_REFLECT = 4, /*!< The time is reflection looped, as if the keys played forward then backward the forward then backward etc for all time. */
+};
+
+ostream & operator<<( ostream & out, PSLoopBehavior const & val );
+
 /*!
  * A list of possible solver deactivation settings. This value defines how the
  *         solver deactivates objects. The solver works on a per object basis.
@@ -341,6 +375,17 @@ enum SolverDeactivation {
 };
 
 ostream & operator<<( ostream & out, SolverDeactivation const & val );
+
+/*! Describes the type of primitives stored in a mesh object. */
+enum MeshPrimitiveType {
+	MESH_PRIMITIVE_TRIANGLES = 0, /*!< Triangle primitive type. */
+	MESH_PRIMITIVE_TRISTRIPS = 1, /*!< Triangle strip primitive type. */
+	MESH_PRIMITIVE_LINESTRIPS = 2, /*!< Line strip primitive type. */
+	MESH_PRIMITIVE_QUADS = 3, /*!< Quadrilateral primitive type. */
+	MESH_PRIMITIVE_POINTS = 4, /*!< Point primitive type. */
+};
+
+ostream & operator<<( ostream & out, MeshPrimitiveType const & val );
 
 /*! This enum lists the different face culling options. */
 enum FaceDrawMode {
@@ -447,7 +492,7 @@ enum ApplyMode {
 	APPLY_DECAL = 1, /*!< For placing images on the object like stickers. */
 	APPLY_MODULATE = 2, /*!< Modulates existing color. (Default) */
 	APPLY_HILIGHT = 3, /*!< PS2 Only.  Function Unknown. */
-	APPLY_HILIGHT2 = 4, /*!< PS2 Only.  Function Unknown. */
+	APPLY_HILIGHT2 = 4, /*!< Parallax Flag in some Oblivion meshes. */
 };
 
 ostream & operator<<( ostream & out, ApplyMode const & val );
@@ -563,9 +608,9 @@ ostream & operator<<( ostream & out, PixelLayout const & val );
  * to be flags they behave as an enum.
  */
 enum ConsistencyType {
-	CT_MUTABLE = 0, /*!< Mutable Mesh */
-	CT_STATIC = 16384, /*!< Static Mesh */
-	CT_VOLATILE = 32768, /*!< Volatile Mesh */
+	CT_MUTABLE = 0x0000, /*!< Mutable Mesh */
+	CT_STATIC = 0x4000, /*!< Static Mesh */
+	CT_VOLATILE = 0x8000, /*!< Volatile Mesh */
 };
 
 ostream & operator<<( ostream & out, ConsistencyType const & val );
@@ -583,6 +628,75 @@ enum TexClampMode {
 
 ostream & operator<<( ostream & out, TexClampMode const & val );
 
+/*! The data format of components. */
+enum ComponentFormat {
+	F_UNKNOWN = 0x00000000, /*!< Unknown, or don't care, format. */
+	F_INT8_1 = 0x00010101, /*!< F_INT8_1 */
+	F_INT8_2 = 0x00020102, /*!< F_INT8_2 */
+	F_INT8_3 = 0x00030103, /*!< F_INT8_3 */
+	F_INT8_4 = 0x00040104, /*!< F_INT8_4 */
+	F_UINT8_1 = 0x00010105, /*!< F_UINT8_1 */
+	F_UINT8_2 = 0x00020106, /*!< F_UINT8_2 */
+	F_UINT8_3 = 0x00030107, /*!< F_UINT8_3 */
+	F_UINT8_4 = 0x00040108, /*!< F_UINT8_4 */
+	F_NORMINT8_1 = 0x00010109, /*!< F_NORMINT8_1 */
+	F_NORMINT8_2 = 0x0002010A, /*!< F_NORMINT8_2 */
+	F_NORMINT8_3 = 0x0003010B, /*!< F_NORMINT8_3 */
+	F_NORMINT8_4 = 0x0004010C, /*!< F_NORMINT8_4 */
+	F_NORMUINT8_1 = 0x0001010D, /*!< F_NORMUINT8_1 */
+	F_NORMUINT8_2 = 0x0002010E, /*!< F_NORMUINT8_2 */
+	F_NORMUINT8_3 = 0x0003010F, /*!< F_NORMUINT8_3 */
+	F_NORMUINT8_4 = 0x00040110, /*!< F_NORMUINT8_4 */
+	F_INT16_1 = 0x00010211, /*!< F_INT16_1 */
+	F_INT16_2 = 0x00020212, /*!< F_INT16_2 */
+	F_INT16_3 = 0x00030213, /*!< F_INT16_3 */
+	F_INT16_4 = 0x00040214, /*!< F_INT16_4 */
+	F_UINT16_1 = 0x00010215, /*!< F_UINT16_1 */
+	F_UINT16_2 = 0x00020216, /*!< F_UINT16_2 */
+	F_UINT16_3 = 0x00030217, /*!< F_UINT16_3 */
+	F_UINT16_4 = 0x00040218, /*!< F_UINT16_4 */
+	F_NORMINT16_1 = 0x00010219, /*!< F_NORMINT16_1 */
+	F_NORMINT16_2 = 0x0002021A, /*!< F_NORMINT16_2 */
+	F_NORMINT16_3 = 0x0003021B, /*!< F_NORMINT16_3 */
+	F_NORMINT16_4 = 0x0004021C, /*!< F_NORMINT16_4 */
+	F_NORMUINT16_1 = 0x0001021D, /*!< F_NORMUINT16_1 */
+	F_NORMUINT16_2 = 0x0002021E, /*!< F_NORMUINT16_2 */
+	F_NORMUINT16_3 = 0x0003021F, /*!< F_NORMUINT16_3 */
+	F_NORMUINT16_4 = 0x00040220, /*!< F_NORMUINT16_4 */
+	F_INT32_1 = 0x00010421, /*!< F_INT32_1 */
+	F_INT32_2 = 0x00020422, /*!< F_INT32_2 */
+	F_INT32_3 = 0x00030423, /*!< F_INT32_3 */
+	F_INT32_4 = 0x00040424, /*!< F_INT32_4 */
+	F_UINT32_1 = 0x00010425, /*!< F_UINT32_1 */
+	F_UINT32_2 = 0x00020426, /*!< F_UINT32_2 */
+	F_UINT32_3 = 0x00030427, /*!< F_UINT32_3 */
+	F_UINT32_4 = 0x00040428, /*!< F_UINT32_4 */
+	F_NORMINT32_1 = 0x00010429, /*!< F_NORMINT32_1 */
+	F_NORMINT32_2 = 0x0002042A, /*!< F_NORMINT32_2 */
+	F_NORMINT32_3 = 0x0003042B, /*!< F_NORMINT32_3 */
+	F_NORMINT32_4 = 0x0004042C, /*!< F_NORMINT32_4 */
+	F_NORMUINT32_1 = 0x0001042D, /*!< F_NORMUINT32_1 */
+	F_NORMUINT32_2 = 0x0002042E, /*!< F_NORMUINT32_2 */
+	F_NORMUINT32_3 = 0x0003042F, /*!< F_NORMUINT32_3 */
+	F_NORMUINT32_4 = 0x00040430, /*!< F_NORMUINT32_4 */
+	F_FLOAT16_1 = 0x00010231, /*!< F_FLOAT16_1 */
+	F_FLOAT16_2 = 0x00020232, /*!< F_FLOAT16_2 */
+	F_FLOAT16_3 = 0x00030233, /*!< F_FLOAT16_3 */
+	F_FLOAT16_4 = 0x00040234, /*!< F_FLOAT16_4 */
+	F_FLOAT32_1 = 0x00010435, /*!< F_FLOAT32_1 */
+	F_FLOAT32_2 = 0x00020436, /*!< F_FLOAT32_2 */
+	F_FLOAT32_3 = 0x00030437, /*!< F_FLOAT32_3 */
+	F_FLOAT32_4 = 0x00040438, /*!< F_FLOAT32_4 */
+	F_UINT_10_10_10_L1 = 0x00010439, /*!< F_UINT_10_10_10_L1 */
+	F_NORMINT_10_10_10_L1 = 0x0001043A, /*!< F_NORMINT_10_10_10_L1 */
+	F_NORMINT_11_11_10 = 0x0001043B, /*!< F_NORMINT_11_11_10 */
+	F_NORMUINT8_4_BGRA = 0x0004013C, /*!< F_NORMUINT8_4_BGRA */
+	F_NORMINT_10_10_10_2 = 0x0001043D, /*!< F_NORMINT_10_10_10_2 */
+	F_UINT_10_10_10_2 = 0x0001043E, /*!< F_UINT_10_10_10_2 */
+};
+
+ostream & operator<<( ostream & out, ComponentFormat const & val );
+
 /*! The motion type. Determines quality of motion? */
 enum MotionQuality {
 	MO_QUAL_INVALID = 0, /*!< Automatically assigned to MO_QUAL_FIXED, MO_QUAL_KEYFRAMED or MO_QUAL_DEBRIS */
@@ -599,6 +713,15 @@ enum MotionQuality {
 
 ostream & operator<<( ostream & out, MotionQuality const & val );
 
+/*! Sets how objects are to be cloned. */
+enum CloningBehavior {
+	CLONING_SHARE = 0, /*!< Share this object pointer with the newly cloned scene. */
+	CLONING_COPY = 1, /*!< Create an exact duplicate of this object for use with the newly cloned scene. */
+	CLONING_BLANK_COPY = 2, /*!< Create a copy of this object for use with the newly cloned stream, leaving some of the data to be written later. */
+};
+
+ostream & operator<<( ostream & out, CloningBehavior const & val );
+
 enum PropagationMode {
 	PROPAGATE_ON_SUCCESS = 0, /*!< On Success */
 	PROPAGATE_ON_FAILURE = 1, /*!< On Failure */
@@ -612,7 +735,7 @@ ostream & operator<<( ostream & out, PropagationMode const & val );
 enum PixelFormat {
 	PX_FMT_RGB8 = 0, /*!< 24-bit color: uses 8 bit to store each red, blue, and green component. */
 	PX_FMT_RGBA8 = 1, /*!< 32-bit color with alpha: uses 8 bits to store each red, blue, green, and alpha component. */
-	PX_FMT_PAL8 = 2, /*!< 8-bit palette index: uses 8 bits to store an index into the palette stored in a NiPallete object. */
+	PX_FMT_PAL8 = 2, /*!< 8-bit palette index: uses 8 bits to store an index into the palette stored in a NiPalette object. */
 	PX_FMT_DXT1 = 4, /*!< DXT1 compressed texture. */
 	PX_FMT_DXT5 = 5, /*!< DXT5 compressed texture. */
 	PX_FMT_DXT5_ALT = 6, /*!< DXT5 compressed texture. It is not clear what the difference is with PX_FMT_DXT5. */
@@ -694,6 +817,19 @@ enum BSShaderFlags {
 };
 
 ostream & operator<<( ostream & out, BSShaderFlags const & val );
+
+/*! Determines how the data stream is accessed? */
+enum DataStreamAccess {
+	CPU_READ = 1, /*!< CPU Read */
+	CPU_WRITE_STATIC = 2, /*!< CPU Write Static */
+	CPU_WRITE_MUTABLE = 4, /*!< CPU Write Mutable */
+	CPU_WRITE_VOLATILE = 8, /*!< CPU Write Volatile */
+	GPU_READ = 16, /*!< GPU Read */
+	GPU_WRITE = 32, /*!< GPU Write */
+	CPU_WRITE_STATIC_INITITIALIZED = 64, /*!< CPU Write Static Inititialized */
+};
+
+ostream & operator<<( ostream & out, DataStreamAccess const & val );
 
 /*! Editor flags for the Body Partitions. */
 enum BSPartFlag {

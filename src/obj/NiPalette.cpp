@@ -14,13 +14,12 @@ All rights reserved.  Please see niflib.h for license. */
 #include "../../include/ObjectRegistry.h"
 #include "../../include/NIF_IO.h"
 #include "../../include/obj/NiPalette.h"
-#include "../../include/gen/ByteColor4.h"
 using namespace Niflib;
 
 //Definition of TYPE constant
 const Type NiPalette::TYPE("NiPalette", &NiObject::TYPE );
 
-NiPalette::NiPalette() : unknownByte((byte)0), numEntries((unsigned int)0) {
+NiPalette::NiPalette() : unknownByte((byte)0), numEntries((unsigned int)256) {
 	//--BEGIN CONSTRUCTOR CUSTOM CODE--//
 	//--END CUSTOM CODE--//
 }
@@ -46,10 +45,7 @@ void NiPalette::Read( istream& in, list<unsigned int> & link_stack, const NifInf
 	NifStream( unknownByte, in, info );
 	NifStream( numEntries, in, info );
 	for (unsigned int i1 = 0; i1 < 256; i1++) {
-		NifStream( palette[i1].r, in, info );
-		NifStream( palette[i1].g, in, info );
-		NifStream( palette[i1].b, in, info );
-		NifStream( palette[i1].a, in, info );
+		NifStream( palette[i1], in, info );
 	};
 
 	//--BEGIN POST-READ CUSTOM CODE--//
@@ -64,10 +60,7 @@ void NiPalette::Write( ostream& out, const map<NiObjectRef,unsigned int> & link_
 	NifStream( unknownByte, out, info );
 	NifStream( numEntries, out, info );
 	for (unsigned int i1 = 0; i1 < 256; i1++) {
-		NifStream( palette[i1].r, out, info );
-		NifStream( palette[i1].g, out, info );
-		NifStream( palette[i1].b, out, info );
-		NifStream( palette[i1].a, out, info );
+		NifStream( palette[i1], out, info );
 	};
 
 	//--BEGIN POST-WRITE CUSTOM CODE--//
@@ -89,10 +82,11 @@ std::string NiPalette::asString( bool verbose ) const {
 			out << "<Data Truncated. Use verbose mode to see complete listing.>" << endl;
 			break;
 		};
-		out << "    r:  " << palette[i1].r << endl;
-		out << "    g:  " << palette[i1].g << endl;
-		out << "    b:  " << palette[i1].b << endl;
-		out << "    a:  " << palette[i1].a << endl;
+		if ( !verbose && ( array_output_count > MAXARRAYDUMP ) ) {
+			break;
+		};
+		out << "    Palette[" << i1 << "]:  " << palette[i1] << endl;
+		array_output_count++;
 	};
 	return out.str();
 

@@ -86,13 +86,13 @@ protected:
 	bool hasNormals;
 	/*! The lighting normals. */
 	vector<Vector3 > normals;
+	/*! Unknown. Binormal & tangents? */
+	vector<Vector3 > tangents;
 	/*!
 	 * Unknown. Binormal & tangents? has_normals must be set as well for this field to
 	 * be present.
 	 */
 	vector<Vector3 > binormals;
-	/*! Unknown. Binormal & tangents? */
-	vector<Vector3 > tangents;
 	/*!
 	 * Center of the bounding box (smallest box that contains all vertices) of the
 	 * mesh.

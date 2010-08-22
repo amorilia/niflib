@@ -21,13 +21,17 @@ All rights reserved.  Please see niflib.h for license. */
 #include "../../include/gen/SkinShape.h"
 #include "../../include/obj/NiTriBasedGeom.h"
 #include "../../include/obj/NiSkinInstance.h"
+#include "../../include/gen/SkinShapeGroup.h"
+#include "../../include/gen/SkinShape.h"
+#include "../../include/obj/NiTriBasedGeom.h"
+#include "../../include/obj/NiSkinInstance.h"
 #include "../../include/obj/NiTriBasedGeom.h"
 using namespace Niflib;
 
 //Definition of TYPE constant
 const Type NiBoneLODController::TYPE("NiBoneLODController", &NiTimeController::TYPE );
 
-NiBoneLODController::NiBoneLODController() : unknownInt1((unsigned int)0), numNodeGroups((unsigned int)0), numNodeGroups2((unsigned int)0), numShapeGroups((unsigned int)0), numShapeGroups2((unsigned int)0) {
+NiBoneLODController::NiBoneLODController() : unknownInt1((unsigned int)0), numNodeGroups((unsigned int)0), numNodeGroups2((unsigned int)0), numShapeGroups((unsigned int)0), numShapeGroups2((unsigned int)0), unknownInt2((int)0), unknownInt3((int)0) {
 	//--BEGIN CONSTRUCTOR CUSTOM CODE--//
 	//--END CUSTOM CODE--//
 }
@@ -65,6 +69,11 @@ void NiBoneLODController::Read( istream& in, list<unsigned int> & link_stack, co
 	};
 	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		NifStream( numShapeGroups, in, info );
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		NifStream( numShapeGroups, in, info );
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		shapeGroups1.resize(numShapeGroups);
 		for (unsigned int i2 = 0; i2 < shapeGroups1.size(); i2++) {
 			NifStream( shapeGroups1[i2].numLinkPairs, in, info );
@@ -76,12 +85,43 @@ void NiBoneLODController::Read( istream& in, list<unsigned int> & link_stack, co
 				link_stack.push_back( block_num );
 			};
 		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		shapeGroups1.resize(numShapeGroups);
+		for (unsigned int i2 = 0; i2 < shapeGroups1.size(); i2++) {
+			NifStream( shapeGroups1[i2].numLinkPairs, in, info );
+			shapeGroups1[i2].linkPairs.resize(shapeGroups1[i2].numLinkPairs);
+			for (unsigned int i3 = 0; i3 < shapeGroups1[i2].linkPairs.size(); i3++) {
+				NifStream( block_num, in, info );
+				link_stack.push_back( block_num );
+				NifStream( block_num, in, info );
+				link_stack.push_back( block_num );
+			};
+		};
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		NifStream( numShapeGroups2, in, info );
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		NifStream( numShapeGroups2, in, info );
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		shapeGroups2.resize(numShapeGroups2);
 		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
 			NifStream( block_num, in, info );
 			link_stack.push_back( block_num );
 		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		shapeGroups2.resize(numShapeGroups2);
+		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
+			NifStream( block_num, in, info );
+			link_stack.push_back( block_num );
+		};
+	};
+	if ( ( info.version >= 0x14030009 ) && ( info.version <= 0x14030009 ) && ( info.userVersion == 131072 ) ) {
+		NifStream( unknownInt2, in, info );
+		NifStream( unknownInt3, in, info );
 	};
 
 	//--BEGIN POST-READ CUSTOM CODE--//
@@ -116,6 +156,11 @@ void NiBoneLODController::Write( ostream& out, const map<NiObjectRef,unsigned in
 	};
 	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		NifStream( numShapeGroups, out, info );
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		NifStream( numShapeGroups, out, info );
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		for (unsigned int i2 = 0; i2 < shapeGroups1.size(); i2++) {
 			shapeGroups1[i2].numLinkPairs = (unsigned int)(shapeGroups1[i2].linkPairs.size());
 			NifStream( shapeGroups1[i2].numLinkPairs, out, info );
@@ -140,7 +185,40 @@ void NiBoneLODController::Write( ostream& out, const map<NiObjectRef,unsigned in
 				}
 			};
 		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		for (unsigned int i2 = 0; i2 < shapeGroups1.size(); i2++) {
+			shapeGroups1[i2].numLinkPairs = (unsigned int)(shapeGroups1[i2].linkPairs.size());
+			NifStream( shapeGroups1[i2].numLinkPairs, out, info );
+			for (unsigned int i3 = 0; i3 < shapeGroups1[i2].linkPairs.size(); i3++) {
+				if ( info.version < VER_3_3_0_13 ) {
+					WritePtr32( &(*shapeGroups1[i2].linkPairs[i3].shape), out );
+				} else {
+					if ( shapeGroups1[i2].linkPairs[i3].shape != NULL ) {
+						NifStream( link_map.find( StaticCast<NiObject>(shapeGroups1[i2].linkPairs[i3].shape) )->second, out, info );
+					} else {
+						NifStream( 0xFFFFFFFF, out, info );
+					}
+				}
+				if ( info.version < VER_3_3_0_13 ) {
+					WritePtr32( &(*shapeGroups1[i2].linkPairs[i3].skinInstance), out );
+				} else {
+					if ( shapeGroups1[i2].linkPairs[i3].skinInstance != NULL ) {
+						NifStream( link_map.find( StaticCast<NiObject>(shapeGroups1[i2].linkPairs[i3].skinInstance) )->second, out, info );
+					} else {
+						NifStream( 0xFFFFFFFF, out, info );
+					}
+				}
+			};
+		};
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		NifStream( numShapeGroups2, out, info );
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		NifStream( numShapeGroups2, out, info );
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
 		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
 			if ( info.version < VER_3_3_0_13 ) {
 				WritePtr32( &(*shapeGroups2[i2]), out );
@@ -152,6 +230,23 @@ void NiBoneLODController::Write( ostream& out, const map<NiObjectRef,unsigned in
 				}
 			}
 		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
+			if ( info.version < VER_3_3_0_13 ) {
+				WritePtr32( &(*shapeGroups2[i2]), out );
+			} else {
+				if ( shapeGroups2[i2] != NULL ) {
+					NifStream( link_map.find( StaticCast<NiObject>(shapeGroups2[i2]) )->second, out, info );
+				} else {
+					NifStream( 0xFFFFFFFF, out, info );
+				}
+			}
+		};
+	};
+	if ( ( info.version >= 0x14030009 ) && ( info.version <= 0x14030009 ) && ( info.userVersion == 131072 ) ) {
+		NifStream( unknownInt2, out, info );
+		NifStream( unknownInt3, out, info );
 	};
 
 	//--BEGIN POST-WRITE CUSTOM CODE--//
@@ -224,6 +319,8 @@ std::string NiBoneLODController::asString( bool verbose ) const {
 		out << "    Shape Groups 2[" << i1 << "]:  " << shapeGroups2[i1] << endl;
 		array_output_count++;
 	};
+	out << "  Unknown Int 2:  " << unknownInt2 << endl;
+	out << "  Unknown Int 3:  " << unknownInt3 << endl;
 	return out.str();
 
 	//--BEGIN POST-STRING CUSTOM CODE--//
@@ -247,6 +344,21 @@ void NiBoneLODController::FixLinks( const map<unsigned int,NiObjectRef> & object
 				shapeGroups1[i2].linkPairs[i3].skinInstance = FixLink<NiSkinInstance>( objects, link_stack, info );
 			};
 		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
+		for (unsigned int i2 = 0; i2 < shapeGroups1.size(); i2++) {
+			for (unsigned int i3 = 0; i3 < shapeGroups1[i2].linkPairs.size(); i3++) {
+				shapeGroups1[i2].linkPairs[i3].shape = FixLink<NiTriBasedGeom>( objects, link_stack, info );
+				shapeGroups1[i2].linkPairs[i3].skinInstance = FixLink<NiSkinInstance>( objects, link_stack, info );
+			};
+		};
+	};
+	if ( ( info.version >= 0x04020200 ) && ( info.userVersion == 0 ) ) {
+		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
+			shapeGroups2[i2] = FixLink<NiTriBasedGeom>( objects, link_stack, info );
+		};
+	};
+	if ( ( info.version >= 0x0A020000 ) && ( info.version <= 0x0A020000 ) && ( info.userVersion == 1 ) ) {
 		for (unsigned int i2 = 0; i2 < shapeGroups2.size(); i2++) {
 			shapeGroups2[i2] = FixLink<NiTriBasedGeom>( objects, link_stack, info );
 		};
@@ -269,9 +381,17 @@ std::list<NiObjectRef> NiBoneLODController::GetRefs() const {
 				refs.push_back(StaticCast<NiObject>(shapeGroups1[i1].linkPairs[i2].skinInstance));
 		};
 	};
+	for (unsigned int i1 = 0; i1 < shapeGroups1.size(); i1++) {
+		for (unsigned int i2 = 0; i2 < shapeGroups1[i1].linkPairs.size(); i2++) {
+			if ( shapeGroups1[i1].linkPairs[i2].skinInstance != NULL )
+				refs.push_back(StaticCast<NiObject>(shapeGroups1[i1].linkPairs[i2].skinInstance));
+		};
+	};
 	for (unsigned int i1 = 0; i1 < shapeGroups2.size(); i1++) {
 		if ( shapeGroups2[i1] != NULL )
 			refs.push_back(StaticCast<NiObject>(shapeGroups2[i1]));
+	};
+	for (unsigned int i1 = 0; i1 < shapeGroups2.size(); i1++) {
 	};
 	return refs;
 }

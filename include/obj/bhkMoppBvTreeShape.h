@@ -166,6 +166,11 @@ protected:
 	 * box of the packed shape.
 	 */
 	float scale;
+	/*!
+	 * The tree of bounding volume data (old style, contains more than just the mopp
+	 * script).
+	 */
+	vector<byte > oldMoppData;
 	/*! The tree of bounding volume data. */
 	vector<byte > moppData;
 public:
