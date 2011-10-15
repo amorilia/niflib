@@ -67,6 +67,9 @@ Version 0.7.3
 * Added scale access to bhkPackedNiTriStripsShape (contributed by
   gentle_sal, see issue #3411667).
 
+* Added normal and welding access to hkPackedNiTriStripsData
+  (contributed by gentle_sal, see issue #3411672).
+
 Version 0.7.2
 =============
 

@@ -194,40 +194,42 @@ std::list<NiObject *> hkPackedNiTriStripsData::GetPtrs() const {
 //--BEGIN MISC CUSTOM CODE--//
 
 vector<Triangle> hkPackedNiTriStripsData::GetTriangles() const {
-	//Remove any bad triangles
-	vector<Triangle> good_triangles;
-	for ( unsigned i = 0; i < triangles.size(); ++i ) {
-		const Triangle & t = triangles[i].triangle;
-		if ( t.v1 != t.v2 && t.v2 != t.v3 && t.v1 != t.v3 ) {
-			good_triangles.push_back(t);
-		}
+	vector<Triangle> tris;
+	for ( size_t i = 0; i < triangles.size(); ++i ) {
+		tris.push_back(triangles[i].triangle);
 	}
-	return good_triangles;
+	return tris;
 }
 
 vector<Vector3> hkPackedNiTriStripsData::GetNormals() const {
-	//Remove any bad triangles
-	vector<Vector3> good_normals;
-	for ( unsigned i = 0; i < triangles.size(); ++i ) {
-		const Vector3 & t = triangles[i].normal;
-		good_normals.push_back(t);
+	vector<Vector3> norms;
+	for ( size_t i = 0; i < triangles.size(); ++i ) {
+		norms.push_back(triangles[i].normal);
 	}
-	return good_normals;
+	return norms;
 }
 
-int hkPackedNiTriStripsData::GetVertexCount() const {
-	return int(vertices.size());
+vector<unsigned short> hkPackedNiTriStripsData::GetWeldings() const {
+	vector<unsigned short> weldings;
+	for ( size_t i = 0; i < triangles.size(); ++i ) {
+		weldings.push_back(triangles[i].weldingInfo);
+	}
+	return weldings;
+}
+
+size_t hkPackedNiTriStripsData::GetVertexCount() const {
+	return vertices.size();
 }
 
 vector<Vector3> hkPackedNiTriStripsData::GetVertices() const {
 	return vertices;
 }
 
-int hkPackedNiTriStripsData::GetNumFace( ) const {
-	return int(triangles.size());
+size_t hkPackedNiTriStripsData::GetNumTriangles( ) const {
+	return triangles.size();
 }
 
-void hkPackedNiTriStripsData::SetNumFaces( int value ) {
+void hkPackedNiTriStripsData::SetNumTriangles( size_t value ) {
 	if ( value > 65535 || value < 0 ) {
 		throw runtime_error("Invalid Face Count: must be between 0 and 65535.");
 	}
@@ -249,6 +251,15 @@ void hkPackedNiTriStripsData::SetNormals( const vector<Vector3> & in ) {
 	}
 	for (size_t i=0; i<triangles.size(); ++i) {
 		triangles[i].normal = in[i];
+	}
+}
+
+void hkPackedNiTriStripsData::SetWeldings( const vector<unsigned short> & in ) {
+	if ( triangles.size() != in.size()) {
+		throw runtime_error("Invalid Face Count: normal count must be same as face count.");
+	}
+	for (size_t i=0; i<triangles.size(); ++i) {
+		triangles[i].weldingInfo = in[i];
 	}
 }
 

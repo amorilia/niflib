@@ -65,33 +65,39 @@ public:
 	 */
 	NIFLIB_API virtual vector<Triangle> GetTriangles() const;
 
-	/*! 
+	/*!
 	 * Returns the number of vertices that make up this mesh.  This is also the number of normals, colors, and UV coordinates if these are used.
 	 * \return The number of vertices that make up this mesh.
 	 */
-	NIFLIB_API int GetVertexCount() const;
+	NIFLIB_API size_t GetVertexCount() const;
 
-	/*! 
+	/*!
 	 * Used to retrieve the vertices used by this mesh.  The size of the vector will be the same as the vertex count retrieved with the IShapeData::GetVertexCount function.
 	 * \return A vector containing the vertices used by this mesh.
 	 */
 	NIFLIB_API vector<Vector3> GetVertices() const;
 
-	/*! 
-	 * Used to retrieve the normals used by this mesh.  The size of the vector will either be zero if no normals are used, or be the same as the vertex count retrieved with the IShapeData::GetVertexCount function.
+	/*!
+	 * Used to retrieve the face-normals used by this mesh.  The size of the vector will either be zero if no normals are used, or be the same as the face count retrieved with the IShapeData::GetNumFace function.
 	 * \return A vector containing the normals used by this mesh, if any.
 	 */
 	NIFLIB_API vector<Vector3> GetNormals() const;
 
-	/*! Returns the number of vertices that make up this mesh.
+	/*!
+	 * Used to retrieve the welding defined in this mesh.  The size of the vector will either be zero if no triangles are used, or be the same as the face count retrieved with the IShapeData::GetNumFace function.
+	 * \return A vector containing the normals used by this mesh, if any.
+	 */
+	NIFLIB_API vector<unsigned short> GetWeldings() const;
+
+	/*! Returns the number of triangles that make up this mesh.
 	* \return The number of faces that make up this mesh.
 	*/
-	NIFLIB_API virtual int GetNumFace( ) const;
+	NIFLIB_API virtual size_t GetNumTriangles( ) const;
 
-	/*! Returns the number of vertices that make up this mesh.
+	/*! Sets the number of triangles that make up this mesh.
 	* \param value The number of faces that make up this mesh.
 	*/
-	NIFLIB_API virtual void SetNumFaces( int value );
+	NIFLIB_API virtual void SetNumTriangles( size_t value );
 
 	/*! Replaces the triangle face data in this mesh with new data.
 	* \param in A vector containing the new face data.  Maximum size is 65,535.
@@ -103,6 +109,11 @@ public:
 	* \param in A vector containing the new face normal data.
 	*/
 	NIFLIB_API virtual void SetNormals( const vector<Vector3> & in );
+
+	/*! Replaces the face welding data in this mesh with new data.
+	* \param in A vector containing the new face welding data.
+	*/
+	NIFLIB_API virtual void SetWeldings( const vector<unsigned short> & in );
 
 	/*! Replaces the vertex data in this mesh with new data.
 	* \param in A vector containing the new vertex data.
@@ -116,10 +127,10 @@ public:
 	NIFLIB_API vector<OblivionSubShape> GetSubShapes() const;
 
 	/*!
-	* Sets the subshape data object used by this geometry node. 
+	* Sets the subshape data object used by this geometry node.
 	* \param[in] value The subshape data.
 	*/
-	NIFLIB_API void SetSubShapes( vector<OblivionSubShape>& value );	
+	NIFLIB_API void SetSubShapes( vector<OblivionSubShape>& value );
 
 	//--END CUSTOM CODE--//
 protected:
